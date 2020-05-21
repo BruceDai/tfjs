@@ -34,3 +34,19 @@ export {gpgpu_util, webgl_util};
 export function forceHalfFloat(): void {
   env().set('WEBGL_FORCE_F16_TEXTURES', true);
 }
+
+/**
+ * Enforce use low-power perfernce.
+ */
+/** @doc {heading: 'Environment', namespace: 'webgl'} */
+export function useLowPower(): void {
+  env().set('WEBGL_USE_LOW_POWER', true);
+}
+
+/**
+ * Enforce use high-performance perfernce.
+ */
+/** @doc {heading: 'Environment', namespace: 'webgl'} */
+export function useHightPerformance(): void {
+  env().set('WEBGL_USE_HIGH_PERFORMANCE', true);
+}

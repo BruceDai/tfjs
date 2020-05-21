@@ -17,14 +17,15 @@
 
 const contexts: {[key: string]: WebGLRenderingContext} = {};
 
-const WEBGL_ATTRIBUTES: WebGLContextAttributes = {
+let WEBGL_ATTRIBUTES: WebGLContextAttributes = {
   alpha: false,
   antialias: false,
   premultipliedAlpha: false,
   preserveDrawingBuffer: false,
   depth: false,
   stencil: false,
-  failIfMajorPerformanceCaveat: true
+  failIfMajorPerformanceCaveat: true,
+  powerPreference: "default"
 };
 
 export function setWebGLContext(
@@ -32,14 +33,17 @@ export function setWebGLContext(
   contexts[webGLVersion] = gl;
 }
 
-export function getWebGLContext(webGLVersion: number): WebGLRenderingContext {
+export function getWebGLContext(
+                    webGLVersion: number,
+                    powerPreference = 0): WebGLRenderingContext {
   if (!(webGLVersion in contexts)) {
-    contexts[webGLVersion] = getWebGLRenderingContext(webGLVersion);
+    contexts[webGLVersion] = getWebGLRenderingContext(webGLVersion,
+                                 powerPreference);
   }
   const gl = contexts[webGLVersion];
   if (gl.isContextLost()) {
     delete contexts[webGLVersion];
-    return getWebGLContext(webGLVersion);
+    return getWebGLContext(webGLVersion, powerPreference);
   }
 
   gl.disable(gl.DEPTH_TEST);
@@ -65,7 +69,9 @@ function createCanvas(webGLVersion: number) {
   }
 }
 
-function getWebGLRenderingContext(webGLVersion: number): WebGLRenderingContext {
+function getWebGLRenderingContext(
+             webGLVersion: number,
+             powerPreference: number): WebGLRenderingContext {
   if (webGLVersion !== 1 && webGLVersion !== 2) {
     throw new Error('Cannot get WebGL rendering context, WebGL is disabled.');
   }
@@ -75,6 +81,11 @@ function getWebGLRenderingContext(webGLVersion: number): WebGLRenderingContext {
     ev.preventDefault();
     delete contexts[webGLVersion];
   }, false);
+  if (powerPreference === 1) {
+    WEBGL_ATTRIBUTES.powerPreference = "low-power";
+  } else if (powerPreference === 2) {
+    WEBGL_ATTRIBUTES.powerPreference = "high-performance";
+  }
   if (webGLVersion === 1) {
     return (canvas.getContext('webgl', WEBGL_ATTRIBUTES) ||
             canvas.getContext('experimental-webgl', WEBGL_ATTRIBUTES)) as

@@ -164,3 +164,19 @@ ENV.registerFlag('WEBGL_SIZE_UPLOAD_UNIFORM', () => {
   const useUniforms = ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED');
   return useUniforms ? 4 : 0;
 });
+
+/** Whether prioritizes power saving over rendering performance. */
+ENV.registerFlag('WEBGL_USE_LOW_POWER', () => false);
+
+/** Whether prioritizes rendering performance over power consumption */
+ENV.registerFlag('WEBGL_USE_HIGH_PERFORMANCE', () => false);
+
+/** 0: "default", 1: "low-power", 2: "high-performance". */
+ENV.registerFlag('WEBGL_POWER_PREFERENCE', () => {
+  if (ENV.getBool('WEBGL_USE_LOW_POWER')) {
+    return 1;
+  } else if (ENV.getBool('WEBGL_USE_HIGH_PERFORMANCE')) {
+    return 2;
+  }
+  return 0;
+});
