@@ -17,14 +17,15 @@
 
 const contexts: {[key: string]: WebGLRenderingContext} = {};
 
-const WEBGL_ATTRIBUTES: WebGLContextAttributes = {
+let WEBGL_ATTRIBUTES: WebGLContextAttributes = {
   alpha: false,
   antialias: false,
   premultipliedAlpha: false,
   preserveDrawingBuffer: false,
   depth: false,
   stencil: false,
-  failIfMajorPerformanceCaveat: true
+  failIfMajorPerformanceCaveat: true,
+  powerPreference: "default"
 };
 
 export function setWebGLContext(
@@ -69,6 +70,13 @@ function getWebGLRenderingContext(webGLVersion: number): WebGLRenderingContext {
   if (webGLVersion !== 1 && webGLVersion !== 2) {
     throw new Error('Cannot get WebGL rendering context, WebGL is disabled.');
   }
+  const powerPreference = env().get('WEBGL_POWER_PREFERENCE') as number;
+  if (powerPreference === 1) {
+    WEBGL_ATTRIBUTES.powerPreference = "low-power";
+  } else if (powerPreference === 2) {
+    WEBGL_ATTRIBUTES.powerPreference = "high-performance";
+  }
+
   const canvas = createCanvas(webGLVersion);
 
   canvas.addEventListener('webglcontextlost', (ev: Event) => {

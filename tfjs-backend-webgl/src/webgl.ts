@@ -34,3 +34,12 @@ export {gpgpu_util, webgl_util};
 export function forceHalfFloat(): void {
   env().set('WEBGL_FORCE_F16_TEXTURES', true);
 }
+
+/**
+ * Set power preference for WebGL context.
+ * @param powerPreference 0: "default", 1: "low-power", 2: "high-performance"
+ */
+/** @doc {heading: 'Environment', namespace: 'webgl'} */
+export function setPowerPreference(powerPreference: number): void {
+  env().set('WEBGL_POWER_PREFERENCE', powerPreference);
+}

@@ -164,3 +164,9 @@ ENV.registerFlag('WEBGL_SIZE_UPLOAD_UNIFORM', () => {
   const useUniforms = ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED');
   return useUniforms ? 4 : 0;
 });
+
+/**
+ * Power preference for WebGL context.
+ * 0: "default", 1: "low-power", 2: "high-performance"
+ */
+ENV.registerFlag('WEBGL_POWER_PREFERENCE', () => 0);

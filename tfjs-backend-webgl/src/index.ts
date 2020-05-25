@@ -27,6 +27,7 @@ import './register_all_kernels';
 // Export webgl utilities
 export * from './webgl';
 
-// Export forceHalfFlost under webgl namespace for the union bundle.
-import {forceHalfFloat} from './webgl';
-export const webgl = {forceHalfFloat};
+// Export forceHalfFlost and setPowerPreference
+// under webgl namespace for the union bundle.
+import {forceHalfFloat, setPowerPreference} from './webgl';
+export const webgl = {forceHalfFloat, setPowerPreference};
